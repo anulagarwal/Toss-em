@@ -4,6 +4,28 @@ using UnityEngine;
 
 public class UIManager : MonoBehaviour
 {
+    [SerializeField] private GameObject MainMenu;
+    [SerializeField] private GameObject InGame;
+    [SerializeField] private GameObject Win;
+    [SerializeField] private GameObject Lose;
+
+    private static UIManager _instance;
+
+    public static UIManager Instance { get { return _instance; } }
+
+
+    private void Awake()
+    {
+        if (_instance != null && _instance != this)
+        {
+            Destroy(this.gameObject);
+        }
+        else
+        {
+            _instance = this;
+        }
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -14,5 +36,44 @@ public class UIManager : MonoBehaviour
     void Update()
     {
         
+    }
+
+    public void UpdateState(GameManager.State state)
+    {
+
+        switch (state)
+        {
+            case GameManager.State.InGame:
+                MainMenu.SetActive(false);
+                InGame.SetActive(true);
+                Win.SetActive(false);
+                Lose.SetActive(false);
+
+                break;
+
+            case GameManager.State.MainMenu:
+
+                MainMenu.SetActive(true);
+                InGame.SetActive(false);
+                Win.SetActive(false);
+                Lose.SetActive(false);
+
+                break;
+
+            case GameManager.State.Win:
+                MainMenu.SetActive(false);
+                InGame.SetActive(false);
+                Win.SetActive(true);
+                Lose.SetActive(false);
+                break;
+
+            case GameManager.State.Lose:
+                MainMenu.SetActive(false);
+                InGame.SetActive(false);
+                Win.SetActive(false);
+                Lose.SetActive(true);
+                break;
+
+        }
     }
 }
